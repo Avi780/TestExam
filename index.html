@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>RRB Technician Grade I Signal Practice</title>
+  <style>
+    :root {
+      --navy: #123b63;
+      --pale: #eef5fb;
+      --green: #087443;
+      --red: #b42318
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: #f5f7fa;
+      color: #14212e;
+      font: 16px Arial, sans-serif
+    }
+
+    header {
+      background: var(--navy);
+      color: #fff;
+      padding: 24px 16px
+    }
+
+    .head {
+      max-width: 950px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px
+    }
+
+    .head h1 {
+      font-size: 24px;
+      margin: 0 0 4px
+    }
+
+    .head p {
+      margin: 0;
+      opacity: .9
+    }
+
+    .timer {
+      font-size: 25px;
+      font-weight: bold;
+      background: #ffffff1c;
+      padding: 10px 14px;
+      border-radius: 8px
+    }
+
+    main {
+      max-width: 950px;
+      margin: 22px auto;
+      padding: 0 16px
+    }
+
+    .box,
+    .card {
+      background: #fff;
+      border: 1px solid #dbe3ec;
+      border-radius: 12px;
+      padding: 17px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px #123b6312
+    }
+
+    .box {
+      line-height: 1.5
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px
+    }
+
+    .stat {
+      background: var(--pale);
+      padding: 9px 13px;
+      border-radius: 8px;
+      font-weight: bold
+    }
+
+    .meta {
+      font-size: 14px;
+      color: #526575
+    }
+
+    .paper-list {
+      display: grid;
+      gap: 0;
+      margin: 12px 0 0;
+      padding: 0;
+      list-style: none
+    }
+
+    .paper-list li {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 10px 0;
+      border-top: 1px solid #dbe3ec
+    }
+
+    .paper-list a {
+      color: var(--navy);
+      font-weight: bold
+    }
+
+    .candidate-controls {
+      display: flex;
+      align-items: end;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px
+    }
+
+    .candidate-controls label {
+      display: grid;
+      gap: 5px;
+      font-weight: bold
+    }
+
+    .candidate-controls input,
+    .candidate-controls select {
+      min-width: 220px;
+      padding: 10px;
+      border: 1px solid #cbd5df;
+      border-radius: 6px;
+      font: inherit
+    }
+
+    #resultHistory {
+      margin-top: 18px
+    }
+
+    .result-row {
+      padding: 9px 0;
+      border-top: 1px solid #dbe3ec
+    }
+
+    .question {
+      font-size: 20px;
+      line-height: 1.42;
+      margin: 14px 0 18px
+    }
+
+    .options {
+      display: grid;
+      gap: 10px
+    }
+
+    .option {
+      width: 100%;
+      text-align: left;
+      background: #fff;
+      color: #14212e;
+      border: 1px solid #cbd5df;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font: inherit
+    }
+
+    .option.selected {
+      border: 2px solid var(--navy);
+      background: #edf5fb
+    }
+
+    .option:disabled {
+      cursor: default;
+      opacity: 1
+    }
+
+    .option.answer-correct {
+      border-color: var(--green);
+      background: #e8f5ee
+    }
+
+    .option.answer-wrong {
+      border-color: var(--red);
+      background: #fdf0ef
+    }
+
+    .answer-feedback {
+      margin-top: 14px;
+      padding: 12px;
+      border-left: 4px solid #cbd5df;
+      background: #f7f9fb;
+      line-height: 1.5
+    }
+
+    .answer-feedback.correct {
+      border-color: var(--green)
+    }
+
+    .answer-feedback.wrong {
+      border-color: var(--red)
+    }
+
+    .answer-feedback p {
+      margin: 7px 0 0
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 20px
+    }
+
+    .actions div {
+      display: flex;
+      gap: 10px
+    }
+
+    button {
+      font: inherit;
+      padding: 10px 13px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--navy);
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold
+    }
+
+    button.secondary {
+      background: #e8f0f7;
+      color: var(--navy)
+    }
+
+    button.finish {
+      background: var(--green)
+    }
+
+    .hidden {
+      display: none
+    }
+
+    .review {
+      margin: 10px 0;
+      padding: 12px;
+      border-left: 4px solid #cbd5df;
+      background: #f7f9fb
+    }
+
+    .review.correct {
+      border-color: var(--green)
+    }
+
+    .review.wrong {
+      border-color: var(--red)
+    }
+
+    @media(max-width:600px) {
+      .head {
+        align-items: flex-start;
+        flex-direction: column
+      }
+
+      .head h1 {
+        font-size: 21px
+      }
+
+      .timer {
+        font-size: 21px
+      }
+
+      .question {
+        font-size: 18px
+      }
+
+      .actions {
+        flex-direction: column
+      }
+
+      .actions div {
+        justify-content: space-between
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="head">
+      <div>
+        <p>Official-pattern mock test</p>
+      </div>
+      <div class="timer" id="timer">90:00</div>
+    </div>
+  </header>
+  <main>
+    <section class="box" id="intro">Choose a practice exam. Each mock has 100 questions, randomized from its own question set, with one-third negative marking.</section>
+    <section class="box" id="setup">
+      <label for="examMode"><strong>Practice exam</strong></label>
+      <select id="examMode">
+        <option value="technician">RRB Technician Grade I Signal</option>
+        <option value="section-controller">RRB Section Controller · CEN 03/2026</option>
+      </select>
+      <p class="meta" id="examModeDetails"></p>
+      <label for="candidateName"><strong>Your name</strong></label>
+      <div class="candidate-controls">
+        <input id="candidateName" type="text" maxlength="80" autocomplete="name" placeholder="Enter your name">
+        <button id="begin">Start a 90-minute mock</button>
+        <button class="secondary hidden" id="resume">Return to saved test</button>
+      </div>
+      <div id="resultHistory"></div>
+    </section>
+    <!-- <section class="box" id="pastPapers">
+      <h2>Past Year Papers</h2>
+      <p class="meta">Full papers are hosted by third-party preparation sites and have not been verified against archived RRB response sheets.</p>
+      <h3>Technician Grade I Signal · 2024</h3>
+      <ul class="paper-list">
+        <li><span>19 December · Shift 1 · English</span><a href="https://cdn-images.prepp.in/public/image/RRB_Technician_Grade_I_Dec_19_2024_Shift_1_English_ae564f2eee28ce51b5563a4f30cc5ca9.pdf" target="_blank" rel="noopener">Open paper PDF</a></li>
+        <li><span>19 December · Shift 2 · English</span><a href="https://cdn-images.prepp.in/public/image/RRB_Technician_Grade_I_Dec_19_Shift_2_English_6d406dd5c2af785d2f88b6fdf0f76260.pdf" target="_blank" rel="noopener">Open paper PDF</a></li>
+        <li><span>19 December · Shift 3 · English</span><a href="https://cdn-images.prepp.in/public/image/RRB_Technician_Grade_I_Dec_19_2024_Shift_3_English_ee1d99d21bca5c2c526da5459b46a195.pdf" target="_blank" rel="noopener">Open paper PDF</a></li>
+        <li><span>20 December · Shift 1 · English</span><a href="https://cdn-images.prepp.in/public/image/RRB_Technician_Grade_I_Dec_20_2024_Shift_1_English_2ae41139e5af2846698a98686a2892fd.pdf" target="_blank" rel="noopener">Open paper PDF</a></li>
+      </ul>
+      <h3>Technician · 2018</h3>
+      <p class="meta">The available listing combines ALP and Technician CBT 1 papers. Check the post and shift in each PDF before treating it as a Grade I Signal paper.</p>
+      <a href="https://prepp.in/rrb-technician-exam/question%20paper%202018" target="_blank" rel="noopener">Browse 2018 paper listings</a>
+      <p class="meta">Papers labelled 2025 on some sites were held in March 2026, so they are not included in this through-2025 list.</p>
+    </section> -->
+    <section class="stats hidden" id="stats">
+      <div class="stat" id="progress">Question 1 / 100</div>
+      <div class="stat" id="attempted">Attempted: 0</div>
+      <div class="stat" id="left">Unattempted: 100</div>
+    </section>
+    <section class="card hidden" id="card"></section>
+    <section class="box hidden" id="summary"></section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="questions.js"></script>
+  <script>
+    const extra = [
+      {id: 2001, subject: 'General Awareness', topic: 'Computer Basics', difficulty: 'Easy', question: 'What does ROM stand for?', options: ['Read Only Memory', 'Random Only Memory', 'Run Only Memory', 'Read Open Memory'], correct: 'A', explanation: 'ROM stands for Read Only Memory.'},
+      {id: 2002, subject: 'General Awareness', topic: 'Computer Basics', difficulty: 'Easy', question: 'Which device converts a paper document into a digital image?', options: ['Scanner', 'Printer', 'Monitor', 'Speaker'], correct: 'A', explanation: 'A scanner converts paper documents into digital images.'},
+      {id: 2003, subject: 'General Awareness', topic: 'Computer Basics', difficulty: 'Easy', question: 'What does WWW stand for?', options: ['World Wide Web', 'World Web Window', 'Wide World Web', 'Web World Wide'], correct: 'A', explanation: 'WWW stands for World Wide Web.'},
+      {id: 2004, subject: 'General Awareness', topic: 'Computer Basics', difficulty: 'Easy', question: 'Which type of software is used to create and edit text documents?', options: ['Word processor', 'Web browser', 'Operating system', 'Antivirus'], correct: 'A', explanation: 'A word processor is used to create and edit documents.'},
+      {id: 2005, subject: 'General Awareness', topic: 'Computer Basics', difficulty: 'Easy', question: 'Which key deletes the character to the left of the cursor?', options: ['Backspace', 'Enter', 'Shift', 'Tab'], correct: 'A', explanation: 'Backspace removes the character to the left of the cursor.'}];
+    let all = [];
+    let sectionControllerQuestions = [];
+    const googleSheetId = '1Xg_QsBX2y-Gd_lmlfrSJbUCiL3EV_yb6';
+    async function googleRows(sheetName) {
+      const url = 'https://docs.google.com/spreadsheets/d/' + googleSheetId + '/gviz/tq?tqx=out:json&headers=1&sheet=' + encodeURIComponent(sheetName) + '&cachebust=' + Date.now();
+      const response = await fetch(url, {cache: 'no-store'});
+      if (!response.ok) throw new Error('Google Sheet is not publicly available');
+      const text = await response.text();
+      const start = text.indexOf('(') + 1, end = text.lastIndexOf(')');
+      if (start < 1 || end < start) throw new Error('Google Sheet response could not be read');
+      const table = JSON.parse(text.slice(start, end)).table;
+      return [table.cols.map(column => column.label || ''), ...table.rows.map(row => row.c.map(cell => cell ? cell.v : ''))];
+    }
+    function applyQuestionRows(questionRows, answerRows) {
+      const answers = new Map(answerRows.slice(1).map(row => [String(row[0]), {correct: String(row[1]), explanation: String(row[3])}]));
+      const source = questionRows.slice(1).map(row => ({id: row[0], subject: String(row[1]), topic: String(row[2]), difficulty: String(row[3]), question: String(row[4]), options: row.slice(5, 9).map(String), correct: answers.get(String(row[0]))?.correct || '', explanation: answers.get(String(row[0]))?.explanation || ''})).filter(q => q.question && q.correct);
+      if (source.length < 100) throw new Error('Question source contains too few questions');
+      all = [...new Map([...source, ...extra].map(q => [q.question, q])).values()];
+    }
+    function appendAdvancedPracticeRows(rows) {
+      const advanced = rows.slice(1).map((row, index) => {
+        const correct = String(row[8] || '').match(/^\s*([ABCD])(?=[.)\s])/i);
+        const hint = String(row[9] || '').trim();
+        const explanation = String(row[10] || '').trim();
+        return {
+          id: 'advanced-' + index,
+          subject: String(row[0] || ''),
+          topic: String(row[1] || ''),
+          difficulty: String(row[2] || 'Advanced'),
+          question: String(row[3] || ''),
+          options: row.slice(4, 8).map(option => String(option || '')),
+          correct: correct ? correct[1].toUpperCase() : '',
+          hint,
+          explanation
+        };
+      }).filter(question => question.question && question.correct && question.options.length === 4 && question.options.every(Boolean));
+      all = [...new Map([...all, ...advanced].map(question => [question.question, question])).values()];
+    }
+    async function loadSectionControllerQuestions() {
+      if (sectionControllerQuestions.length >= 100) return;
+      const rows = await googleRows('Section Controller 100Q Practice');
+      sectionControllerQuestions = rows.slice(1).map((row, index) => {
+        const correct = String(row[8] || '').match(/^\s*([ABCD])(?=[.)\s])/i);
+        return {
+          id: 'section-controller-' + index,
+          subject: String(row[0] || ''),
+          topic: String(row[1] || ''),
+          difficulty: String(row[2] || 'Advanced'),
+          question: String(row[3] || ''),
+          options: row.slice(4, 8).map(option => String(option || '')),
+          correct: correct ? correct[1].toUpperCase() : '',
+          hint: String(row[9] || '').trim(),
+          explanation: String(row[10] || '').trim()
+        };
+      }).filter(question => question.question && question.correct && question.options.length === 4 && question.options.every(Boolean));
+      if (sectionControllerQuestions.length < 100) throw new Error('The Section Controller question set is incomplete');
+    }
+    async function loadQuestionBank() {
+      try {
+        const [questionRows, answerRows] = await Promise.all([googleRows('Question Bank'), googleRows('Answer Key')]);
+        applyQuestionRows(questionRows, answerRows);
+        try {appendAdvancedPracticeRows(await googleRows('Advanced Practice Questions'));} catch (advancedError) {}
+        $('intro').innerHTML = '<strong>Google Sheet connected:</strong> this mock loads questions and answers from your shared Google Sheet whenever the page opens. 100 questions in 90 minutes. Marking: +1 correct and −⅓ wrong. A question text cannot repeat in a test.';
+      } catch (googleError) {
+        try {
+          const response = await fetch('question_bank.xlsx');
+          if (!response.ok || typeof XLSX === 'undefined') throw new Error('Excel workbook could not load');
+          const workbook = XLSX.read(await response.arrayBuffer(), {type: 'array'});
+          const questionRows = XLSX.utils.sheet_to_json(workbook.Sheets['Question Bank'], {header: 1, defval: ''}).slice(1);
+          const answerRows = XLSX.utils.sheet_to_json(workbook.Sheets['Answer Key'], {header: 1, defval: ''}).slice(1);
+          applyQuestionRows([['Question ID'], ...questionRows], [['Question ID'], ...answerRows]);
+          $('intro').innerHTML = '<strong>Excel fallback:</strong> the Google Sheet is unavailable, so the included Excel workbook is being used.';
+        } catch (excelError) {
+          all = [...new Map([...window.QUESTION_BANK, ...extra].map(q => [q.question, q])).values()];
+          $('intro').innerHTML = '<strong>Offline fallback:</strong> the Google Sheet and Excel file are unavailable, so the saved question bank is being used.';
+        }
+      }
+    }
+    const technicianGroups = [
+      ['General Awareness', 10, q => q.subject === 'General Awareness' && q.topic !== 'Computer Basics'],
+      ['Reasoning', 15, q => q.subject === 'Reasoning'],
+      ['Computer Basics', 20, q => q.subject === 'Computer Basics' || q.topic === 'Computer Basics'],
+      ['Mathematics', 20, q => q.subject === 'Mathematics'],
+      ['Basic Science & Engineering', 35, q => q.subject === 'Basic Science & Engineering']];
+    const sectionControllerGroups = [
+      ['Analytical & Mathematical Capability', 60, q => q.subject === 'Analytical & Mathematical Capability'],
+      ['Logical Capability', 20, q => q.subject === 'Logical Capability'],
+      ['Mental Reasoning', 20, q => q.subject === 'Mental Reasoning']];
+    const $ = id => document.getElementById(id);
+    const ACTIVE_KEY = 'rrbTechnicianActiveTest';
+    const RESULTS_KEY = 'rrbTechnicianResults';
+    const RESULTS_ENDPOINT = '';
+    let test = [], answers = [], position = 0, remaining = 5400, duration = 5400, tick, candidateName = '', testId = '', examMode = 'technician';
+
+    function shuffle(a) {a = [...a]; for (let i = a.length - 1; i > 0; i--) {const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]} return a}
+    function createTest() {const source = examMode === 'section-controller' ? sectionControllerQuestions : all; const groups = examMode === 'section-controller' ? sectionControllerGroups : technicianGroups; const used = new Set(), out = []; for (const [name, count, match] of groups) {const pool = shuffle(source.filter(q => match(q) && !used.has(q.question))); if (pool.length < count) throw Error('Not enough unique questions for ' + name); pool.slice(0, count).forEach(q => {used.add(q.question); out.push(q)})} return shuffle(out)}
+    function time(n) {return String(Math.floor(n / 60)).padStart(2, '0') + ':' + String(n % 60).padStart(2, '0')}
+    function updateExamMode() {
+      examMode = $('examMode').value;
+      duration = examMode === 'section-controller' ? 7200 : 5400;
+      $('timer').textContent = time(duration);
+      $('begin').textContent = examMode === 'section-controller' ? 'Start a 120-minute CBT' : 'Start a 90-minute mock';
+      $('examModeDetails').textContent = examMode === 'section-controller'
+        ? '100 questions: 60 Analytical & Mathematical, 20 Logical, 20 Mental Reasoning. CBAT is a separate selection stage.'
+        : '100 questions: 10 General Awareness, 15 Reasoning, 20 Computer Basics, 20 Mathematics, 35 Basic Science & Engineering.';
+      $('pastPapers').classList.toggle('hidden', examMode !== 'technician');
+    }
+    function readStored(key, fallback) {try {return JSON.parse(localStorage.getItem(key)) || fallback} catch (error) {return fallback}}
+    function saveActive() {
+      try {localStorage.setItem(ACTIVE_KEY, JSON.stringify({test, answers, position, remaining, duration, examMode, candidateName, testId}))} catch (error) {}
+    }
+    function update() {
+      const attempted = answers.filter(Number.isInteger).length;
+      $('timer').textContent = time(remaining);
+      $('progress').textContent = 'Question ' + (position + 1) + ' / 100';
+      $('attempted').textContent = 'Attempted: ' + attempted;
+      $('left').textContent = 'Unattempted: ' + (100 - attempted);
+    }
+    function renderSavedResults() {
+      const history = $('resultHistory');
+      const results = readStored(RESULTS_KEY, []).slice(-10).reverse();
+      history.replaceChildren();
+      if (!results.length) return;
+      const heading = document.createElement('h3');
+      heading.textContent = 'Saved results';
+      history.append(heading);
+      results.forEach(result => {
+        const row = document.createElement('div');
+        row.className = 'result-row';
+        const examLabel = result.examMode === 'section-controller' ? 'Section Controller' : 'Technician';
+        row.textContent = result.name + ' · ' + examLabel + ' · ' + Number(result.score).toFixed(2) + ' / 100 · ' + result.correct + ' correct · ' + new Date(result.date).toLocaleString();
+        history.append(row);
+      });
+    }
+    function saveResult(right, wrong, attempted) {
+      const results = readStored(RESULTS_KEY, []).filter(result => result.testId !== testId);
+      const result = {testId, name: candidateName, examMode, score: right - wrong / 3, correct: right, wrong, unattempted: 100 - attempted, date: new Date().toISOString()};
+      results.push(result);
+      try {localStorage.setItem(RESULTS_KEY, JSON.stringify(results));} catch (error) {}
+      if (RESULTS_ENDPOINT) {
+        fetch(RESULTS_ENDPOINT, {method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'text/plain;charset=utf-8'}, body: JSON.stringify(result)}).catch(() => {});
+      }
+      renderSavedResults();
+    }
+    function showTest() {
+      $('setup').classList.add('hidden');
+      $('pastPapers').classList.add('hidden');
+      $('stats').classList.remove('hidden');
+      $('card').classList.remove('hidden');
+      $('summary').classList.add('hidden');
+      render();
+      clearInterval(tick);
+      tick = setInterval(() => {
+        remaining--;
+        if (remaining <= 0) {remaining = 0; update(); finish(true)}
+        else {update(); saveActive()}
+      }, 1000);
+    }
+    function render() {
+      const q = test[position];
+      const answered = Number.isInteger(answers[position]);
+      const correctIndex = 'ABCD'.indexOf(q.correct);
+      const isCorrect = answered && answers[position] === correctIndex;
+      const chosenAnswer = answered ? q.options[answers[position]] : '';
+      const correctAnswer = correctIndex >= 0 ? q.options[correctIndex] : '';
+      const hint = q.hint || q.explanation || '';
+      update();
+      const optionMarkup = q.options.map((option, index) => {
+        const selected = answers[position] === index;
+        const correctOption = answered && index === correctIndex;
+        const wrongChoice = selected && answered && !isCorrect;
+        const stateClass = correctOption ? ' answer-correct' : wrongChoice ? ' answer-wrong' : '';
+        return '<button class="option ' + (selected ? 'selected' : '') + stateClass + '" data-i="' + index + '" ' + (answered ? 'disabled' : '') + '>' + ('ABCD'[index]) + '. ' + option + '</button>';
+      }).join('');
+      const feedback = answered ? '<div class="answer-feedback ' + (isCorrect ? 'correct' : 'wrong') + '" role="status"><strong>' + (isCorrect ? 'Correct!' : 'Incorrect.') + '</strong><p>Your answer: ' + ('ABCD'[answers[position]]) + '. ' + chosenAnswer + '</p><p>Correct answer: ' + q.correct + '. ' + correctAnswer + '</p>' + (hint ? '<p><strong>Hint:</strong> ' + hint + '</p>' : '') + (q.hint && q.explanation ? '<p>' + q.explanation + '</p>' : '') + '</div>' : '';
+      $('card').innerHTML = '<div class="meta">' + q.subject + ' · ' + q.topic + ' · ' + q.difficulty + '</div><div class="question">' + (position + 1) + '. ' + q.question + '</div><div class="options">' + optionMarkup + '</div>' + feedback + '<div class="actions"><div><button class="secondary" id="prev" ' + (position === 0 ? 'disabled' : '') + '>Previous</button><button class="secondary" id="next" ' + (position === 99 ? 'disabled' : '') + '>Next</button></div><button class="finish" id="finish">Submit test</button></div>';
+      if (!answered) $('card').querySelectorAll('.option').forEach(button => button.onclick = () => {if (Number.isInteger(answers[position])) return; answers[position] = +button.dataset.i; saveActive(); render()});
+      $('prev').onclick = () => {position--; saveActive(); render()};
+      $('next').onclick = () => {position++; saveActive(); render()};
+      $('finish').onclick = () => finish(false);
+      saveActive();
+    }
+    function finish(auto) {
+      clearInterval(tick);
+      const attempted = answers.filter(Number.isInteger).length;
+      let right = 0, wrong = 0;
+      test.forEach((question, index) => {
+        if (!Number.isInteger(answers[index])) return;
+        if ('ABCD'[answers[index]] === question.correct) right++;
+        else wrong++;
+      });
+      saveResult(right, wrong, attempted);
+      saveActive();
+      $('stats').classList.add('hidden');
+      $('card').classList.add('hidden');
+      $('summary').classList.remove('hidden');
+      $('pastPapers').classList.remove('hidden');
+      const examLabel = examMode === 'section-controller' ? 'RRB Section Controller CBT' : 'RRB Technician Grade I Signal';
+      const freshTestLabel = examMode === 'section-controller' ? 'Start a fresh 120-minute CBT' : 'Start a fresh 90-minute mock';
+      $('summary').innerHTML = '<h2>' + (auto ? 'Time is over — test submitted' : 'Test submitted') + '</h2><p><strong>' + examLabel + '</strong><br><strong>' + candidateName.replace(/[&<>"']/g, character => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[character])) + '</strong><br><strong>Score: ' + (right - wrong / 3).toFixed(2) + ' / 100</strong><br>Correct: ' + right + ' · Wrong: ' + wrong + ' · Unattempted: ' + (100 - attempted) + '<br>Time used: ' + time(duration - remaining) + ' of ' + time(duration) + '</p><button class="secondary" id="returnToTest">Return to this test</button> <button id="restart">' + freshTestLabel + '</button><h3>Answer review</h3>' + test.map((question, index) => {const choice = !Number.isInteger(answers[index]) ? 'Not attempted' : ('ABCD'[answers[index]] + '. ' + question.options[answers[index]]); const correct = Number.isInteger(answers[index]) && 'ABCD'[answers[index]] === question.correct; return '<div class="review ' + (!Number.isInteger(answers[index]) ? '' : correct ? 'correct' : 'wrong') + '"><strong>Q' + (index + 1) + '. ' + question.question + '</strong><br>Your answer: ' + choice + '<br>Correct answer: ' + question.correct + '. ' + question.options['ABCD'.indexOf(question.correct)] + (question.hint ? '<br><small>Hint: ' + question.hint + '</small>' : '') + '<br><small>' + question.explanation + '</small></div>'}).join('');
+      $('returnToTest').onclick = showTest;
+      $('restart').onclick = beginFresh;
+    }
+    async function beginFresh() {
+      candidateName = $('candidateName').value.trim();
+      if (!candidateName) {alert('Enter your name before starting the test.'); $('candidateName').focus(); return}
+      updateExamMode();
+      if (examMode === 'section-controller') {
+        $('begin').disabled = true;
+        try {await loadSectionControllerQuestions()} catch (error) {alert('The Section Controller question set could not be loaded. Check the shared spreadsheet and try again.'); $('begin').disabled = false; return}
+        $('begin').disabled = false;
+      }
+      test = createTest();
+      answers = Array(100);
+      position = 0;
+      remaining = duration;
+      testId = Date.now().toString();
+      showTest();
+    }
+    function resumeSaved() {
+      const saved = readStored(ACTIVE_KEY, null);
+      if (!saved || !Array.isArray(saved.test) || saved.test.length !== 100 || !Array.isArray(saved.answers)) return;
+      examMode = saved.examMode || 'technician';
+      $('examMode').value = examMode;
+      duration = Number(saved.duration) || (examMode === 'section-controller' ? 7200 : 5400);
+      updateExamMode();
+      test = saved.test;
+      answers = Array.from({length: 100}, (_, index) => Number.isInteger(saved.answers[index]) ? saved.answers[index] : undefined);
+      position = Math.max(0, Math.min(99, Number(saved.position) || 0));
+      remaining = Math.max(0, Math.min(duration, Number(saved.remaining) || 0));
+      candidateName = saved.candidateName || '';
+      testId = saved.testId || Date.now().toString();
+      $('candidateName').value = candidateName;
+      showTest();
+    }
+    $('examMode').onchange = updateExamMode;
+    updateExamMode();
+    $('begin').onclick = beginFresh;
+    $('resume').onclick = resumeSaved;
+    loadQuestionBank().then(() => {
+      renderSavedResults();
+      const saved = readStored(ACTIVE_KEY, null);
+      if (saved && Array.isArray(saved.test) && saved.test.length === 100) $('resume').classList.remove('hidden');
+    });
+  </script>
+</body>
+
+</html>
